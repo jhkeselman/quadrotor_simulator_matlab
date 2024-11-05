@@ -27,9 +27,9 @@
     kpTheta = 1.0; kdTheta = 0.2;
     kpPsi = 1.0; kdPsi = 0.2;
 
-    kpX = 1.0; kdX = 0.8;
-    kpY = 1.0; kdY = 0.8;
-    kpZ = 5; kdZ = 2.5;
+    kpX = 0.455; kdX = 0.25;
+    kpY = 0.455; kdY = 0.25;
+    kpZ = 0.9; kdZ = 0.4;
 
     phi = qd{qn}.euler(1); phiDot = qd{qn}.omega(1);
     theta = qd{qn}.euler(2); thetaDot = qd{qn}.omega(2);
@@ -46,7 +46,7 @@
         phiDes = (1/params.grav)*(accDes1*sin(qd{qn}.yaw_des) - accDes2*cos(qd{qn}.yaw_des));
         thetaDes = (1/params.grav)*(accDes1*cos(qd{qn}.yaw_des) + accDes2*sin(qd{qn}.yaw_des));
         
-        u1 = params.mass*params.grav - params.mass*(kdX*qd{qn}.vel(3) + kpX*(qd{qn}.pos(3) - qd{qn}.pos_des(3)));
+        u1 = params.mass*params.grav - params.mass*(kdZ*qd{qn}.vel(3) + kpZ*(qd{qn}.pos(3) - qd{qn}.pos_des(3)));
     end
 
     F = u1;

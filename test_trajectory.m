@@ -143,10 +143,12 @@ if vis
         h_pos{qn} = figure('Name', ['Quad ' num2str(qn) ' : position']);
         plot_state(h_pos{qn}, QP{qn}.state_hist(1:3,:), QP{qn}.time_hist, 'pos', 'vic');
         plot_state(h_pos{qn}, QP{qn}.state_des_hist(1:3,:), QP{qn}.time_hist, 'pos', 'des');
+        pos_err = norm(QP{qn}.state_hist(1:3, end))
         % Plot velocity for each quad
         h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
         plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
         plot_state(h_vel{qn}, QP{qn}.state_des_hist(4:6,:), QP{qn}.time_hist, 'vel', 'des');
+        vel_err = norm(QP{qn}.state_hist(4:6, end))
     end
 end
 

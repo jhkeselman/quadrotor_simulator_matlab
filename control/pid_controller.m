@@ -23,13 +23,13 @@
     persistent thetaDes;
     
 
-    kpPhi = 1.0; kdPhi = 0.2;
-    kpTheta = 1.0; kdTheta = 0.2;
-    kpPsi = 0.8; kdPsi = 0.16;
+    kpPhi = 0; kdPhi = 0;
+    kpTheta = 0; kdTheta = 0;
+    kpPsi = 1.0; kdPsi = 0;
 
-    kpX = 0.4555; kdX = 0.2527;
-    kpY = 0.4555; kdY = 0.2527;
-    kpZ = 0.925; kdZ = 0.425;
+    kpX = 0; kdX = 0;
+    kpY = 0; kdY = 0;
+    kpZ = 0; kdZ = 0;
 
     phi = qd{qn}.euler(1); phiDot = qd{qn}.omega(1);
     theta = qd{qn}.euler(2); thetaDot = qd{qn}.omega(2);

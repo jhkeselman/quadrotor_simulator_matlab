@@ -58,7 +58,7 @@ set(gcf,'Renderer','OpenGL')
 %% *********************** INITIAL CONDITIONS ***********************
 fprintf('Setting initial conditions...\n')
 % Maximum time that the quadrotor is allowed to fly
-time_tol = 10;          % maximum simulation time
+time_tol = 6;          % maximum simulation time
 starttime = 0;          % start of simulation in seconds
 tstep     = 0.01;       % this determines the time step at which the solution is given
 cstep     = 0.05;       % image capture time interval
@@ -144,12 +144,12 @@ if vis
         h_pos{qn} = figure('Name', ['Quad ' num2str(qn) ' : position']);
         plot_state(h_pos{qn}, QP{qn}.state_hist(1:3,:), QP{qn}.time_hist, 'pos', 'vic');
         plot_state(h_pos{qn}, QP{qn}.state_des_hist(1:3,:), QP{qn}.time_hist, 'pos', 'des');
-        pos_err = norm(QP{qn}.state_hist(1:3, end))
+        % pos_err = norm(QP{qn}.state_hist(1:3, end))
         % Plot velocity for each quad
         h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
         plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
         plot_state(h_vel{qn}, QP{qn}.state_des_hist(4:6,:), QP{qn}.time_hist, 'vel', 'des');
-        vel_err = norm(QP{qn}.state_hist(4:6, end))
+        % vel_err = norm(QP{qn}.state_hist(4:6, end))
     end
 end
 

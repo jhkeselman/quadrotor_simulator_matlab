@@ -40,11 +40,12 @@ persistent icnt;
     roll_des = (1/params.grav)*(r_ddot_des(1)*sin(qd{qn}.yaw_des) - r_ddot_des(2)*cos(qd{qn}.yaw_des));
     pitch_des = (1/params.grav)*(r_ddot_des(1)*cos(qd{qn}.yaw_des) + r_ddot_des(2)*sin(qd{qn}.yaw_des));
 
-    F = params.mass*(params.gravity + qd{qn}.vel_des(3));
-
     M = params.I*[kp_roll*(roll_des - qd{qn}.euler(1)) + kd_roll*(-qd{qn}.omega(1));
                 kp_pitch*(pitch_des - qd{qn}.euler(2)) + kd_pitch*(-qd{qn}.omega(2));
-                kp_yaw*(qd{qn}.yaw_des - qd{qn}.euler(3)) + kd_yaw*(qd{qn}.yawdot_des - qd{qn}.omega(3))];
+                kp_yaw*(qd{qn}.yaw_des - qd{qn}.euler(3)) + kd_yaw*(r_des - -qd{qn}.omega(2))];
+
+    F = 0;
+    M = [0;0;0];
 
 % =================== Your code ends here ===================
 

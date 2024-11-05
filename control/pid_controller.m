@@ -18,19 +18,13 @@ persistent icnt;
  
 % =================== Your code starts here ===================
 %% Parameter Initialization
-    kp_roll = 10;
-    kd_roll = 10;
-    kp_pitch = 10;
-    kd_pitch = 10;
-    kp_yaw = 10;
-    kd_yaw = 10;
+    kp_roll = 1.0; kd_roll = 0.2;
+    kp_pitch = 1.0; kd_pitch = 0.2;
+    kp_yaw = 1.0; kd_yaw = 0.2;
 
-    kp_x = 5;
-    kd_x = 5;
-    kp_y = 5;
-    kd_y = 5;
-    kp_z = 5;
-    kd_z = 5;
+    kp_x = 1.0; kd_x = 0.8;
+    kp_y = 1.0; kd_y = 0.8;
+    kp_z = 5; kd_z = 2.5;
 
     pos_err = qd{qn}.pos_des - qd{qn}.pos;
     vel_err = qd{qn}.vel_des - qd{qn}.vel;

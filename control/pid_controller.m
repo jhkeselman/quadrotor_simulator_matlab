@@ -18,19 +18,19 @@ persistent icnt;
  
 % =================== Your code starts here ===================
 %% Parameter Initialization
-    kp_roll = 0;
-    kd_roll = 0;
-    kp_pitch = 0;
-    kd_pitch = 0;
-    kp_yaw = 0;
-    kd_yaw = 0;
+    kp_roll = 10;
+    kd_roll = 10;
+    kp_pitch = 10;
+    kd_pitch = 10;
+    kp_yaw = 10;
+    kd_yaw = 10;
 
-    kp_x = 0;
-    kd_x = 0;
-    kp_y = 0;
-    kd_y = 0;
-    kp_z = 0;
-    kd_z = 0;
+    kp_x = 5;
+    kd_x = 5;
+    kp_y = 5;
+    kd_y = 5;
+    kp_z = 5;
+    kd_z = 5;
 
     pos_err = qd{qn}.pos_des - qd{qn}.pos;
     vel_err = qd{qn}.vel_des - qd{qn}.vel;
@@ -40,7 +40,7 @@ persistent icnt;
     roll_des = (1/params.grav)*(r_ddot_des(1)*sin(qd{qn}.yaw_des) - r_ddot_des(2)*cos(qd{qn}.yaw_des));
     pitch_des = (1/params.grav)*(r_ddot_des(1)*cos(qd{qn}.yaw_des) + r_ddot_des(2)*sin(qd{qn}.yaw_des));
 
-    F = params.mass*(params.gravity + qd{qn}.vel_des(3));
+    F = params.mass*(params.grav + qd{qn}.vel_des(3));
 
     M = params.I*[kp_roll*(roll_des - qd{qn}.euler(1)) + kd_roll*(-qd{qn}.omega(1));
                 kp_pitch*(pitch_des - qd{qn}.euler(2)) + kd_pitch*(-qd{qn}.omega(2));

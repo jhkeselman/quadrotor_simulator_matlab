@@ -8,9 +8,9 @@
 
 % =================== Your code goes here ===================
 
-persistent gd;
-persistent icnt;
- if isempty(gd)
+ persistent gd;
+ persistent icnt;
+ if isempty(icnt)
      gd = zeros(0,3);
      icnt = 0;
  end
@@ -18,27 +18,42 @@ persistent icnt;
  
 % =================== Your code starts here ===================
 %% Parameter Initialization
-    kp_roll = 1.0; kd_roll = 0.2;
-    kp_pitch = 1.0; kd_pitch = 0.2;
-    kp_yaw = 1.0; kd_yaw = 0.2;
+    persistent u1;
+    persistent phiDes;
+    persistent thetaDes;
+    
 
-    kp_x = 1.0; kd_x = 0.8;
-    kp_y = 1.0; kd_y = 0.8;
-    kp_z = 5; kd_z = 2.5;
+    kpPhi = 1.0; kdPhi = 0.2;
+    kpTheta = 1.0; kdTheta = 0.2;
+    kpPsi = 1.0; kdPsi = 0.2;
 
-    pos_err = qd{qn}.pos_des - qd{qn}.pos;
-    vel_err = qd{qn}.vel_des - qd{qn}.vel;
+    kpX = 1.0; kdX = 0.8;
+    kpY = 1.0; kdY = 0.8;
+    kpZ = 5; kdZ = 2.5;
 
-    r_ddot_des = qd{qn}.acc_des + [kp_x*pos_err(1); kp_y*pos_err(2); kp_z*pos_err(3)] + [kd_x*vel_err(1); kd_y*vel_err(1); kd_z*vel_err(3)];
+    phi = qd{qn}.euler(1); phiDot = qd{qn}.omega(1);
+    theta = qd{qn}.euler(2); thetaDot = qd{qn}.omega(2);
+    psi = qd{qn}.euler(3); psiDot = qd{qn}.omega(3);
 
-    roll_des = (1/params.grav)*(r_ddot_des(1)*sin(qd{qn}.yaw_des) - r_ddot_des(2)*cos(qd{qn}.yaw_des));
-    pitch_des = (1/params.grav)*(r_ddot_des(1)*cos(qd{qn}.yaw_des) + r_ddot_des(2)*sin(qd{qn}.yaw_des));
+    p = cos(theta)*phiDot - cos(phi)*sin(theta)*psiDot;
+    q = thetaDot + sin(phi)*psiDot;
+    r = sin(theta)*phiDot + cos(phi)*cos(theta)*psiDot;
 
-    F = params.mass*(params.grav + qd{qn}.vel_des(3));
+    if mod(icnt, 5) == 0 || icnt == 1 
+        accDes1 = kdX*(qd{qn}.vel_des(1) - qd{qn}.vel(1)) + kpX * (qd{qn}.pos_des(1) - qd{qn}.pos(1)) + qd{qn}.acc_des(1);
+        accDes2 = kdY*(qd{qn}.vel_des(2) - qd{qn}.vel(2)) + kpY * (qd{qn}.pos_des(2) - qd{qn}.pos(2)) + qd{qn}.acc_des(2);
+        
+        phiDes = (1/params.grav)*(accDes1*sin(qd{qn}.yaw_des) - accDes2*cos(qd{qn}.yaw_des));
+        thetaDes = (1/params.grav)*(accDes1*cos(qd{qn}.yaw_des) + accDes2*sin(qd{qn}.yaw_des));
+        
+        u1 = params.mass*params.grav - params.mass*(kdX*qd{qn}.vel(3) + kpX*(qd{qn}.pos(3) - qd{qn}.pos_des(3)));
+    end
 
-    M = params.I*[kp_roll*(roll_des - qd{qn}.euler(1)) + kd_roll*(-qd{qn}.omega(1));
-                kp_pitch*(pitch_des - qd{qn}.euler(2)) + kd_pitch*(-qd{qn}.omega(2));
-                kp_yaw*(qd{qn}.yaw_des - qd{qn}.euler(3)) + kd_yaw*(qd{qn}.yawdot_des - qd{qn}.omega(3))];
+    F = u1;
+
+    M = params.I*[kpPhi*(phiDes - phi) + kdPhi*(-p);
+                kpTheta*(thetaDes - theta) + kdTheta*(-q);
+                kpPsi*(qd{qn}.yaw_des - psi) + kdPsi*(qd{qn}.yawdot_des - r)];
 
 % =================== Your code ends here ===================
 
